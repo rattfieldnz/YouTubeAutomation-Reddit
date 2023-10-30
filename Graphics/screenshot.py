@@ -8,6 +8,8 @@ from typing import Dict, Final
 from playwright.async_api import async_playwright  # pylint: disable=unused-import
 from playwright.sync_api import ViewportSize, sync_playwright
 
+from dotenv import load_dotenv
+import os
 
 #from utils.imagenarator import imagemaker
 
@@ -57,10 +59,10 @@ def get_screenshots_of_reddit_posts(reddit_thread, reddit_comments, screenshot_n
         # Get the thread screenshot
         page = context.new_page()
         # go to reddit's login page
-        page.goto("https://www.reddit.com/login/?experiment_d2x_2020ify_buttons=enabled&use_accountmanager=true&experiment_d2x_google_sso_gis_parity=enabled&experiment_d2x_onboarding=enabled&experiment_d2x_am_modal_design_update=enabled")
+        page.goto("https://www.reddit.com/login/?experiment_d2x_2020ify_buttons=enabled&use_accountmanager=true&experiment_d2x_google_sso_gis_parity=enabled&experiment_d2x_onboarding=enabled&experiment_d2x_am_modal_design_update=enabled", timeout=0)
         # fill user info
-        page.locator("id=loginUsername").fill(my_config["RedditCredential"]["username"])
-        page.locator("id=loginPassword").fill(my_config["RedditCredential"]["passkey"])
+        page.locator("id=loginUsername").fill(os.getenv("REDDIT_USERNAME"))
+        page.locator("id=loginPassword").fill(os.getenv("REDDIT_PASSKEY"))
         page.get_by_role("button", name="Log In").click()
         time.sleep(10)
         # go to the thread

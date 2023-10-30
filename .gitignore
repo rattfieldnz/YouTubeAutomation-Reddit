@@ -1,0 +1,22 @@
+# ignore .env
+.env
+
+# ignore Python TOML config file.
+config.toml
+
+# ignore other assets that should not be commited to source code.
+Assets/temp/*
+BackgroundVideo/*
+Graphics/__pycache__/
+Graphics/data/*
+Reddit/__pycache__/
+Results/*
+TextToSpeech/__pycache__/
+utils/__pycache__/
+VideoEditor/__pycache__/
+Youtube/client_secret*
+Youtube/client_secrets.json
+Youtube/__pycache__/
+token_youtube_v3.pickle
+database.json
+__pycache__/
