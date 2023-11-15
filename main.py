@@ -130,7 +130,7 @@ def main():
 
 def countdown(t): 
     
-    while t: 
+    while t > 0 and t <= int(my_config["App"]["run_every"]): 
         mins, secs = divmod(t, 60) 
         hours, mins = divmod(mins, 60)
         timer = f'{hours:d} hours, {mins:02d} minutes, {secs:02d} seconds.'.format(hours, mins, secs) 
@@ -145,4 +145,3 @@ if __name__ == "__main__":
         main()
         print("\n-------------------------------------------\n")
         countdown(my_config["App"]["run_every"])
-        time.sleep(my_config["App"]["run_every"])
