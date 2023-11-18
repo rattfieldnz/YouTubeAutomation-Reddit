@@ -22,31 +22,7 @@ def create_tts(text, path):
     try:
         voice_id = my_config['TextToSpeechSetup']['voice_id']
         if my_config['TextToSpeechSetup']['multiple_voices']:
-            voices = [
-                "Amy", 
-                "Aria", 
-                "Arthur", 
-                "Brian", 
-                "Danielle", 
-                "Emma", 
-                "Geraint", 
-                "Gregory", 
-                "Ivy", 
-                "Joanna", 
-                "Joey", 
-                "Justin", 
-                "Kendra", 
-                "Kevin", 
-                "Kimberly", 
-                "Matthew", 
-                "Niamh", 
-                "Nicole", 
-                "Olivia", 
-                "Russell", 
-                "Ruth", 
-                "Salli", 
-                "Stephen"
-            ]
+            voices = ["Joanna","Justin","Kendra","Matthew", "Kimberly","Joey","Salli","Matthew"]
             
             voice_id = random.choice(voices)
 
