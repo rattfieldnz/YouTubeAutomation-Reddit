@@ -7,7 +7,7 @@ from utils.clean_text import markdown_to_text
 from utils.add_mp3_pause import add_pause
 from VideoEditor.videomaker import make_final_video
 from Graphics.screenshot import get_screenshots_of_reddit_posts
-from TextToSpeech.tts import create_tts, get_length
+from TextToSpeech.TikTokVoice.tiktokvoice import tts, random_en_tiktok_voice
 import textwrap
 from Reddit import reddit
 import config
@@ -43,14 +43,16 @@ def main():
     print("Getting mp3 files..")
 
     # Download TTS files for the title and comments
-    thread_title = markdown_to_text(thread.title).replace("\"", "'")
+    thread_title = markdown_to_text(thread.title + ' (Tiktok voices)').replace("\"", "'")
     
     # Youtube limits video title lengths to 100 characters
     thread_title_truncated = textwrap.shorten(thread_title, 100, placeholder="")
     
     title_audio_path = f"{thread_id_path}/mp3/title.mp3"
     title_audio_clean_path = f"{thread_id_path}/mp3_clean/title.mp3"
-    create_tts(text=thread_title, path=title_audio_path)
+    
+    #Tiktok API voice:
+    tts(text=thread_title, voice=random_en_tiktok_voice(), filename=title_audio_path, play_sound=False)
 
     comments_audio_path = []
     comments_audio_clean_path = []
@@ -65,10 +67,13 @@ def main():
     for idx, comment in enumerate(comments):
         path = f"{thread_id_path}/mp3/{idx}.mp3"
         comment_body = markdown_to_text(comment.body)
-        create_tts(text=comment_body, path=path)
+        
+        #Tiktok API voice:
+        tts(text=comment_body, voice=random_en_tiktok_voice(), filename=path, play_sound=False)
+        
         comment_duration = get_length(path)
 
-        if current_video_duration + comment_duration + pause <= total_video_duration:
+        if int(current_video_duration or 0) + int(comment_duration or 0) + int(pause) <= total_video_duration:
             comments_audio_path.append(path)
             comments_audio_clean_path.append(f"{thread_id_path}/mp3_clean/{idx}.mp3")
             comments_image_path.append(f"{thread_id_path}/png/{idx}.png")
@@ -102,7 +107,7 @@ def main():
         "best of reddit", "reddit top posts", "reddit thread", "reddit posts",
         "reddit funny", "best reddit posts", "reddit confessions", "r/ask reddit",
         "reddit threads", "reddit mysteries", "disturbing ask reddit threads",
-        "reddit and chill", "reddit compilation",
+        "reddit and chill", "reddit compilation", "tiktok", "tiktokvideo", "tiktokviral"
     ]
     
     hashtags = map(lambda x: str.replace(x, " ", ""), tags)
