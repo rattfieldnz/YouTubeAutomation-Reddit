@@ -12,7 +12,18 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 import Google
 from dotenv import load_dotenv
+
+from tinydb import Query
 import os
+import sys
+
+project_dir = os.path.dirname( __file__ )
+project_dir = os.path.join(project_dir, '..')
+sys.path.append(project_dir )
+
+import database
+
+submission = Query()
 
 # Constants
 API_NAME = "youtube"
@@ -50,6 +61,7 @@ def get_upload_date_time():
 def parse_args():
     parser = argparse.ArgumentParser(description="Upload a video to YouTube")
     parser.add_argument("--file", required=True, help="Video file to upload")
+    parser.add_argument("--reddit_thread_id", required=True, help="Reddit thread ID")
     parser.add_argument("--title", default="Test Title", help="Video title")
     parser.add_argument("--description", default="Test Description", help="Video description")
     parser.add_argument("--category", default="24", help="Numeric video category")
@@ -61,10 +73,11 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
+    db = database.load_database()
     
     if not os.path.exists(args.file):
         sys.exit("Please specify a valid file using the --file parameter.")
-
+        
     try:
         service = create_service()
         upload_date_time = get_upload_date_time()
@@ -86,6 +99,10 @@ if __name__ == "__main__":
 
         if response:
             print(f"Video uploaded successfully. Video ID: {response.get('id')}")
+            if(args.reddit_thread_id is not None):
+                if db.search(submission.id == str(args.reddit_thread_id)):
+                    db.upsert({'youtubeid': response.get('id')}, submission.id == str(args.reddit_thread_id))
+            db.close()
         else:
             print("Video upload failed.")
 

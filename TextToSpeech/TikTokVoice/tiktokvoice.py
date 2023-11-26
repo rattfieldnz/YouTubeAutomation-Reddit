@@ -6,7 +6,6 @@
 
 import threading, requests, base64
 import numpy as np
-from playsound import playsound
 
 VOICES = [
     # DISNEY VOICES
@@ -67,24 +66,26 @@ VOICES = [
 
 def random_en_tiktok_voice():
     ENGLISH_VOICES = [
-        VOICES[2], 
+        VOICES[0],
+        VOICES[2],
+        VOICES[3],
         VOICES[4],
-        VOICES[6],  
-        VOICES[7],  
-        VOICES[8],  
-        VOICES[9], 
-        VOICES[10],  
-        VOICES[11], 
-        VOICES[12],   
-        VOICES[13],   
-        VOICES[14], 
-        VOICES[15],  
-        VOICES[38],   
-        VOICES[39],  
-        VOICES[40]     
+        VOICES[5],
+        VOICES[6],
+        VOICES[7],
+        VOICES[8],
+        VOICES[9],
+        VOICES[10],
+        VOICES[11],
+        VOICES[12],
+        VOICES[13],
+        VOICES[14],
+        VOICES[15],
+        VOICES[38],
+        VOICES[39],
+        VOICES[40]
     ]
-    
-    return np.random.choice(ENGLISH_VOICES, size=1)
+    return np.random.choice(ENGLISH_VOICES, size=1)[0]
 
 ENDPOINTS = ['https://tiktok-tts.weilnet.workers.dev/api/generation', "https://tiktoktts.com/api/tiktok-tts"]
 current_endpoint = 0
@@ -128,7 +129,7 @@ def generate_audio(text: str, voice: str) -> bytes:
     return response.content
 
 # creates an text to speech audio file
-def tts(text: str, voice: str = "none", filename: str = "output.mp3", play_sound: bool = False) -> None:
+def tts(text: str, voice: str = "none", filename: str = "output.mp3") -> None:
     # checking if the website is available
     global current_endpoint
 
@@ -203,8 +204,6 @@ def tts(text: str, voice: str = "none", filename: str = "output.mp3", play_sound
             
         save_audio_file(audio_base64_data, filename)
         print(f"Audio file saved successfully as '{filename}'")
-        if play_sound:
-            playsound(filename)
 
     except Exception as e:
         print("Error occurred while generating audio:", str(e))

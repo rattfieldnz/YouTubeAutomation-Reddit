@@ -1,7 +1,7 @@
 from tinydb import TinyDB
-db = TinyDB('./database.json')
+db = TinyDB('./Database/database.json')
 
-def load_databse():
-    db = TinyDB('./database.json')
+def load_database():
+    db = TinyDB('./Database/database.json')
     return db
 
