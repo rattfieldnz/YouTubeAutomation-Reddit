@@ -13,6 +13,11 @@ import textwrap
 from Reddit import reddit
 import config
 import sys
+from tinydb import Query
+
+import database
+
+submission = Query()
 
 # Constants
 RESULTS_DIR = "./Results"
@@ -20,6 +25,7 @@ RESULTS_DIR = "./Results"
 def main():
     my_config = config.load_config()
     my_reddit = reddit.login()
+    db = database.load_database()
     
     thread = reddit.get_thread(reddit=my_reddit, subreddit=my_config["Reddit"]["subreddit"])
 
@@ -137,8 +143,14 @@ def main():
     hashtags_as_string = ", ".join(hashtags)
     tags_as_string = ", ".join(tags)
     
+    title_prepend = ""
+    
+    if db.search(submission.id == str(thread_id)):
+        title_prepend = "\n\n"
+    db.close()
+    
     with open(title_file, "a+") as f:
-        f.write("Thread Title: " + thread_title + " (Tiktok voices)")
+        f.write(title_prepend + "Thread Title: " + thread_title + " (Tiktok voices)")
         f.write("\n\nHashtags: " + hashtags_as_string)
         f.write("\n\nNormal Tags: " + tags_as_string)
         f.close()
