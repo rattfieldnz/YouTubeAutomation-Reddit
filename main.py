@@ -143,16 +143,10 @@ def main():
     hashtags_as_string = ", ".join(hashtags)
     tags_as_string = ", ".join(tags)
     
-    title_prepend = ""
-    
-    if db.search(submission.id == str(thread_id)):
-        title_prepend = "\n\n"
-    db.close()
-    
-    with open(title_file, "a+") as f:
-        f.write(title_prepend + "Thread Title: " + thread_title + " (Tiktok voices)")
+    with open(title_file, "a") as f:
+        f.write("Thread Title: " + thread_title + " (Tiktok voices)")
         f.write("\n\nHashtags: " + hashtags_as_string)
-        f.write("\n\nNormal Tags: " + tags_as_string)
+        f.write("\n\nNormal Tags: " + tags_as_string + "\n\n")
         f.close()
         
     if my_config["App"]["upload_to_youtube"]:
