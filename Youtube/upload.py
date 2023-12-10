@@ -114,15 +114,15 @@ if __name__ == "__main__":
                     db.upsert({'youtubeid': response.get('id')}, submission.id == str(args.reddit_thread_id))
                 db.close()
                 move_success = shutil.move(videofile, SUCCESSFUL_UPLOAD)
-                print(f"Video file moved into {move_success} folder.")
+                print(f"Video file moved to {move_success}.")
                 move_success = shutil.move(txtfile, SUCCESSFUL_UPLOAD)
-                print(f"Txt file moved into {move_success} folder.")
+                print(f"Txt file moved to {move_success}.")
         else:
             print("Video upload failed.")
             move_failed = shutil.move(videofile, FAILED_UPLOAD)
-            print(f"Video file moved into {move_failed} folder.")
+            print(f"Video file moved to {move_failed}.")
             move_failed = shutil.move(txtfile, FAILED_UPLOAD)
-            print(f"Txt file moved into {move_failed} folder.")
+            print(f"Txt file moved to {move_failed}.")
 
     except KeyboardInterrupt:
         print('Interrupted')
