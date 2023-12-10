@@ -12,6 +12,8 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 import Google
 from dotenv import load_dotenv
+import shutil
+from pathlib import Path
 
 from tinydb import Query
 import os
@@ -26,6 +28,9 @@ import database
 submission = Query()
 
 # Constants
+RESULTS_DIR = "./Results"
+SUCCESSFUL_UPLOAD = RESULTS_DIR + '/SuccessfulUpload'
+FAILED_UPLOAD = RESULTS_DIR + '/FailedUpload'
 API_NAME = "youtube"
 API_VERSION = "v3"
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
@@ -96,15 +101,28 @@ if __name__ == "__main__":
             "notifySubscribers": str(args.notify_subscribers),
         }
         response = upload_video(service, request_body, args.file)
+                            
+        videofile = args.file
+        txtfile = RESULTS_DIR + '/Processing/' + args.reddit_thread_id + '.txt'
+        Path(SUCCESSFUL_UPLOAD).mkdir(parents=True, exist_ok=True)
+        Path(FAILED_UPLOAD).mkdir(parents=True, exist_ok=True)
 
         if response:
             print(f"Video uploaded successfully. Video ID: {response.get('id')}")
             if(args.reddit_thread_id is not None):
                 if db.search(submission.id == str(args.reddit_thread_id)):
                     db.upsert({'youtubeid': response.get('id')}, submission.id == str(args.reddit_thread_id))
-            db.close()
+                db.close()
+                move_success = shutil.move(videofile, SUCCESSFUL_UPLOAD)
+                print(f"Video file moved into {move_success} folder.")
+                move_success = shutil.move(txtfile, SUCCESSFUL_UPLOAD)
+                print(f"Txt file moved into {move_success} folder.")
         else:
             print("Video upload failed.")
+            move_failed = shutil.move(videofile, FAILED_UPLOAD)
+            print(f"Video file moved into {move_failed} folder.")
+            move_failed = shutil.move(txtfile, FAILED_UPLOAD)
+            print(f"Txt file moved into {move_failed} folder.")
 
     except KeyboardInterrupt:
         print('Interrupted')

@@ -20,7 +20,7 @@ import database
 submission = Query()
 
 # Constants
-RESULTS_DIR = "./Results"
+RESULTS_DIR = "./Results/Processing"
 
 def main():
     my_config = config.load_config()
