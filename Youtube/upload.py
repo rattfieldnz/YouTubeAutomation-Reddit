@@ -63,6 +63,18 @@ def get_upload_date_time():
     now = datetime.datetime.now()
     return now.isoformat() + ".000Z"
 
+def move_files(videofile: str, txtfile: str, to_dir: str):
+    if not os.path.exists(videofile) or not os.path.exists(txtfile) or not os.path.exists(to_dir):
+        sys.exit("Please specify a valid video file, text file, or new directory path.")
+    try:
+        move = shutil.move(videofile, to_dir)
+        print(f"Video file moved to {move}.")
+        move = shutil.move(txtfile, to_dir)
+        print(f"Txt file moved to {move}.")
+    except Exception as e:
+        logging.exception(e)
+        
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Upload a video to YouTube")
     parser.add_argument("--file", required=True, help="Video file to upload")
@@ -82,7 +94,10 @@ if __name__ == "__main__":
     
     if not os.path.exists(args.file):
         sys.exit("Please specify a valid file using the --file parameter.")
-        
+
+    videofile = args.file
+    txtfile = RESULTS_DIR + '/Processing/' + args.reddit_thread_id + '.txt' 
+    
     try:
         service = create_service()
         upload_date_time = get_upload_date_time()
@@ -101,9 +116,7 @@ if __name__ == "__main__":
             "notifySubscribers": str(args.notify_subscribers),
         }
         response = upload_video(service, request_body, args.file)
-                            
-        videofile = args.file
-        txtfile = RESULTS_DIR + '/Processing/' + args.reddit_thread_id + '.txt'
+
         Path(SUCCESSFUL_UPLOAD).mkdir(parents=True, exist_ok=True)
         Path(FAILED_UPLOAD).mkdir(parents=True, exist_ok=True)
 
@@ -113,16 +126,10 @@ if __name__ == "__main__":
                 if db.search(submission.id == str(args.reddit_thread_id)):
                     db.upsert({'youtubeid': response.get('id')}, submission.id == str(args.reddit_thread_id))
                 db.close()
-                move_success = shutil.move(videofile, SUCCESSFUL_UPLOAD)
-                print(f"Video file moved to {move_success}.")
-                move_success = shutil.move(txtfile, SUCCESSFUL_UPLOAD)
-                print(f"Txt file moved to {move_success}.")
+                
+                move_files(videofile, txtfile, SUCCESSFUL_UPLOAD)
         else:
-            print("Video upload failed.")
-            move_failed = shutil.move(videofile, FAILED_UPLOAD)
-            print(f"Video file moved to {move_failed}.")
-            move_failed = shutil.move(txtfile, FAILED_UPLOAD)
-            print(f"Txt file moved to {move_failed}.")
+            move_files(videofile, txtfile, FAILED_UPLOAD)
 
     except KeyboardInterrupt:
         print('Interrupted')
@@ -132,3 +139,4 @@ if __name__ == "__main__":
             os._exit(130)
     except Exception as e:
         logging.exception(e)
+        move_files(videofile, txtfile, FAILED_UPLOAD)
