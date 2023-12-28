@@ -61,9 +61,7 @@ def main():
     thread_title = markdown_to_text(thread.title).replace("\"", "'")
     
     # Youtube limits video title lengths to 100 characters
-    tiktok_title_append = " (Tiktok voices)"
-    thread_title_truncated = textwrap.shorten(thread_title, 100 - len(tiktok_title_append), placeholder="")
-    thread_title_truncated += tiktok_title_append 
+    thread_title_truncated = textwrap.shorten(thread_title, 100, placeholder="")
     
     title_audio_path = f"{thread_id_path}/mp3/title.mp3"
     title_audio_clean_path = f"{thread_id_path}/mp3_clean/title.mp3"
