@@ -110,12 +110,12 @@ def make_final_video(
     final.write_videofile(
         f"./Results/Processing/{subreddit}.mp4",
         fps=int(24),
-        codec='libx264', 
+        codec='libx264',
         audio_codec="aac",
         audio_bitrate="192k",
         threads=multiprocessing.cpu_count(),
-        ffmpeg_params=['-crf', '0']
-        #preset="ultrafast", # for testing purposes
+        ffmpeg_params=['-crf', '15'],
+        preset="ultrafast", # for testing purposes
     )
     final.close()
 
