@@ -142,7 +142,7 @@ def main():
     tags_as_string = ", ".join(tags)
     
     with open(title_file, "a") as f:
-        f.write("Thread Title: " + thread_title + " (Tiktok voices)")
+        f.write("Thread Title: " + thread_title)
         f.write("\n\nHashtags: " + hashtags_as_string)
         f.write("\n\nNormal Tags: " + tags_as_string + "\n\n")
         f.close()
