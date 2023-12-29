@@ -1,22 +1,21 @@
 #!/usr/bin/python
 
-import os
-import sys
-import datetime
-import logging
-import argparse
+
+from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
-import Google
-from dotenv import load_dotenv
-import shutil
 from pathlib import Path
-
 from tinydb import Query
+import argparse
+import datetime
+import Google
+import logging
 import os
+import shutil
+import socket
 import sys
 
 project_dir = os.path.dirname( __file__ )
@@ -35,6 +34,8 @@ API_NAME = "youtube"
 API_VERSION = "v3"
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 VALID_PRIVACY_STATUSES = ("public", "private", "unlisted")
+
+socket.setdefaulttimeout(120000)
 
 def create_service():
     load_dotenv()
