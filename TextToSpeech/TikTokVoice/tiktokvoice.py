@@ -3,9 +3,16 @@
 # topic: TikTok-Voice-TTS
 # version: 1.0
 # credits: https://github.com/oscie57/tiktok-voice
-
+import os
+import sys
 import threading, requests, base64
 import numpy as np
+
+project_dir = os.path.dirname( __file__ )
+project_dir = os.path.join(project_dir, '..')
+sys.path.append(project_dir)
+
+from utils.utils import http_timeout
 
 VOICES = [
     # DISNEY VOICES
@@ -111,7 +118,7 @@ def split_string(string: str, chunk_size: int) -> list[str]:
 # checking if the website that provides the service is available
 def get_api_response() -> requests.Response:
     url = f'{ENDPOINTS[current_endpoint].split("/a")[0]}'
-    response = requests.get(url)
+    response = requests.get(url,timeout=http_timeout())
     return response
 
 # saving the audio file
@@ -125,7 +132,7 @@ def generate_audio(text: str, voice: str) -> bytes:
     url = f'{ENDPOINTS[current_endpoint]}'
     headers = {'Content-Type': 'application/json'}
     data = {'text': text, 'voice': voice}
-    response = requests.post(url, headers=headers, json=data)
+    response = requests.post(url, headers=headers, json=data, timeout=http_timeout())
     return response.content
 
 # creates an text to speech audio file
