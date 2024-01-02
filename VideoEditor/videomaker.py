@@ -62,8 +62,6 @@ def make_final_video(
     print("Creating the final video 🎥")
     background_clip = prepare_background(reddit_id, length,W,H)
 
-
-
     # Gather all audio clips
     audio_clips = [
         AudioFileClip(i)

@@ -16,6 +16,7 @@ import sys
 from tinydb import Query
 
 import database
+import constants
 
 submission = Query()
 
@@ -128,18 +129,10 @@ def main():
 
     title_file = f"{RESULTS_DIR}/{thread_id}.txt"
     
-    tags = [
-        "reddit", "reddit stories", "ask reddit", "reddit story",
-        "best of reddit", "reddit top posts", "reddit thread", "reddit posts",
-        "reddit funny", "best reddit posts", "reddit confessions", "r/ask reddit",
-        "reddit threads", "reddit mysteries", "disturbing ask reddit threads",
-        "reddit and chill", "reddit compilation", "tiktok", "tiktokvideo", "tiktokviral"
-    ]
-    
-    hashtags = map(lambda x: str.replace(x, " ", ""), tags)
+    hashtags = map(lambda x: str.replace(x, " ", ""), constants.VIDEO_TAGS)
     hashtags = [f'#{ht}' for ht in hashtags]
     hashtags_as_string = ", ".join(hashtags)
-    tags_as_string = ", ".join(tags)
+    tags_as_string = ", ".join(constants.VIDEO_TAGS)
     
     with open(title_file, "a") as f:
         f.write("Thread Title: " + thread_title)
@@ -149,13 +142,15 @@ def main():
         
     if my_config["App"]["upload_to_youtube"]:
 
+        playlist_id = my_config['App']['playlist_id']
         cmd = (
             f"/usr/bin/python3 {my_config['Directory']['path']}/Youtube/upload.py" 
             f" --file {final_video_path}"
-            f" --title \"{thread_title_truncated}\"" 
+            f" --reddit_thread_id \"{thread_id}\""
+            f" --playlist_id \"{playlist_id}\""
+            f" --title \"{thread_title_truncated}\""
             f" --description \"{thread_title}\n\n{hashtags_as_string}\"" 
             f" --tags \"{tags_as_string}\"" 
-            f" --reddit_thread_id \"{thread_id}\"" 
             f" --privacy_status private"
         )
         subprocess.call(cmd, shell=True)
