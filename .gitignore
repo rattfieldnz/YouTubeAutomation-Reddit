@@ -16,8 +16,8 @@ utils/__pycache__/
 VideoEditor/__pycache__/
 Youtube/client_secret*
 Youtube/client_secrets.json
+Youtube/token_youtube_v3.pickle
 Youtube/__pycache__/
-token_youtube_v3.pickle
 database.json
 __pycache__/
 test.py

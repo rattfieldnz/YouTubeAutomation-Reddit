@@ -6,6 +6,9 @@ import sys
 from mutagen.mp3 import MP3
 import config
 import random
+import socket
+
+socket.setdefaulttimeout(120000)
 
 def creat_session():
     my_config = config.load_config()

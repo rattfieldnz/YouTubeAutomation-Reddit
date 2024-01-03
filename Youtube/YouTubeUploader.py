@@ -22,6 +22,7 @@ import database
 import constants
 from utils.utils import generic_exception_message
 from utils.utils import generic_http_exception_message
+from utils.utils import create_directory
 
 class YouTubeUploader:
     def __init__(self, args):
@@ -63,8 +64,9 @@ class YouTubeUploader:
             }
             response = self.upload_video(request_body, videofile)
 
-            Path(constants.SUCCESSFUL_UPLOAD).mkdir(parents=True, exist_ok=True)
-            Path(constants.FAILED_UPLOAD).mkdir(parents=True, exist_ok=True)
+            create_directory(constants.SUCCESSFUL_UPLOAD)
+            create_directory(constants.PROCESSING_DIR)
+            create_directory(constants.FAILED_UPLOAD)
 
             if response:
                 video_id = response.get("id")

@@ -1,7 +1,9 @@
 # Constants
-RESULTS_DIR = "./Results"
+DEFAULT_HTTP_TIMEOUT=300
+RESULTS_DIR = './Results'
 SUCCESSFUL_UPLOAD = RESULTS_DIR + '/SuccessfulUpload'
 FAILED_UPLOAD = RESULTS_DIR + '/FailedUpload'
+PROCESSING_DIR = RESULTS_DIR + '/Processing'
 API_NAME = "youtube"
 API_VERSION = "v3"
 SCOPES = [

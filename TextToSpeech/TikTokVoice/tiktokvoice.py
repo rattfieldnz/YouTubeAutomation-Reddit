@@ -7,12 +7,15 @@ import os
 import sys
 import threading, requests, base64
 import numpy as np
+import socket
 
 project_dir = os.path.dirname( __file__ )
 project_dir = os.path.join(project_dir, '..')
 sys.path.append(project_dir)
 
-from utils.utils import http_timeout
+import constants
+
+socket.setdefaulttimeout(120000)
 
 VOICES = [
     # DISNEY VOICES
@@ -118,7 +121,7 @@ def split_string(string: str, chunk_size: int) -> list[str]:
 # checking if the website that provides the service is available
 def get_api_response() -> requests.Response:
     url = f'{ENDPOINTS[current_endpoint].split("/a")[0]}'
-    response = requests.get(url,timeout=http_timeout())
+    response = requests.get(url,timeout=constants.DEFAULT_HTTP_TIMEOUT)
     return response
 
 # saving the audio file
@@ -132,7 +135,7 @@ def generate_audio(text: str, voice: str) -> bytes:
     url = f'{ENDPOINTS[current_endpoint]}'
     headers = {'Content-Type': 'application/json'}
     data = {'text': text, 'voice': voice}
-    response = requests.post(url, headers=headers, json=data, timeout=http_timeout())
+    response = requests.post(url, headers=headers, json=data, timeout=constants.DEFAULT_HTTP_TIMEOUT)
     return response.content
 
 # creates an text to speech audio file

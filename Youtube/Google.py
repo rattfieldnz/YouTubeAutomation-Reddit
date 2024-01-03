@@ -1,9 +1,14 @@
 import os
+import sys
 import pickle
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 import datetime
+
+project_dir = os.path.dirname( __file__ )
+project_dir = os.path.join(project_dir, '..')
+sys.path.append(project_dir)
 
 def Create_Service(client_secret_file, api_name, api_version, *scopes):
     CLIENT_SECRET_FILE = client_secret_file
@@ -12,7 +17,7 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
     SCOPES = [scope for scope in scopes[0]]
 
     cred = None
-    pickle_file = f'token_{API_SERVICE_NAME}_{API_VERSION}.pickle'
+    pickle_file = f'./Youtube/token_{API_SERVICE_NAME}_{API_VERSION}.pickle'
 
     if os.path.exists(pickle_file):
         with open(pickle_file, 'rb') as token:
