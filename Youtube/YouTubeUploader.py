@@ -1,9 +1,11 @@
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
+from googleapiclient.errors import ResumableUploadError
 from googleapiclient.errors import HttpError
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
+from tqdm import tqdm
 from tinydb import Query
 import Google
 import logging
@@ -100,14 +102,39 @@ class YouTubeUploader:
             sys.exit(constants.INVALID_TEXT_FILE_MSG)
             
         try:
-            socket.setdefaulttimeout(120000)
-            response = self.service.videos().insert(
+            socket.setdefaulttimeout(constants.SOCKET_TIMEOUT)
+
+            media = MediaFileUpload(media_file, resumable=True)
+
+            request = self.service.videos().insert(
                 part="snippet,status",
                 body=request_body,
-                media_body=MediaFileUpload(media_file)
-            ).execute()
+                media_body=media
+            )
 
+            response = None
+            with tqdm(total=media.size(), unit="B", unit_scale=True, desc="Uploading") as progress_bar:
+                while response is None:
+                    try:
+                        status, response = request.next_chunk()
+                        if status:
+                            progress_bar.update(status.resumable_progress)
+                    except ResumableUploadError as e:
+                        if "A new upload session ID is required" in str(e):
+                            media = MediaFileUpload(media_file, resumable=True)
+                            request = self.service.videos().insert(
+                                part="snippet,status",
+                                body=request_body,
+                                media_body=media
+                            )
+                        else:
+                            raise
+
+                progress_bar.close()
+                print("Upload Complete!")
+                
             return response
+
         except HttpError as e:
             logging.error(f"An HTTP Error has occurred while uploading the video: {e}")
             return None
