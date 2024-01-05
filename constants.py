@@ -23,3 +23,4 @@ VIDEO_TAGS = [
     "reddit threads", "reddit mysteries", "disturbing ask reddit threads",
     "reddit and chill", "reddit compilation", "tiktok", "tiktokvideo", "tiktokviral"
 ]
+AWS_POLLY_VOICES = ["Joanna","Justin","Kendra","Matthew", "Kimberly","Joey","Salli","Matthew"]

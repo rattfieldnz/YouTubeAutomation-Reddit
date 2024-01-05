@@ -1,4 +1,5 @@
-
+import os
+from dotenv import load_dotenv
 from boto3 import Session
 from botocore.exceptions import BotoCoreError, ClientError
 from contextlib import closing
@@ -7,14 +8,16 @@ from mutagen.mp3 import MP3
 import config
 import random
 import socket
+import constants
 
 socket.setdefaulttimeout(120000)
 
 def creat_session():
+    load_dotenv()
     my_config = config.load_config()
-    session = Session(aws_access_key_id=my_config['AmazonAWSCredential']['aws_access_key_id'],
-                      aws_secret_access_key=my_config['AmazonAWSCredential']['aws_secret_access_key'],
-                      region_name=my_config['AmazonAWSCredential']['region_name']
+    session = Session(aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+                      aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+                      region_name=os.getenv('AWS_REGION_NAME')
                       )
     return session
 def create_tts(text, path):
@@ -25,7 +28,7 @@ def create_tts(text, path):
     try:
         voice_id = my_config['TextToSpeechSetup']['voice_id']
         if my_config['TextToSpeechSetup']['multiple_voices']:
-            voices = ["Joanna","Justin","Kendra","Matthew", "Kimberly","Joey","Salli","Matthew"]
+            voices = constants.AWS_POLLY_VOICES
             
             voice_id = random.choice(voices)
 

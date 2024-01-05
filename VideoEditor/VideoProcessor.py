@@ -105,8 +105,6 @@ class VideoProcessor:
                 self.upload_to_youtube(final_video_path, thread_id, thread_title_truncated, thread_title, hashtags_as_string,
                                        tags_as_string)
 
-        except HttpError as e:
-            sys.exit(generic_http_exception_message(e))
         except Exception as e:
             sys.exit(generic_exception_message(e))
 
