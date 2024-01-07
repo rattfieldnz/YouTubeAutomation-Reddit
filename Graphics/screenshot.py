@@ -10,15 +10,15 @@ from playwright.sync_api import ViewportSize, sync_playwright
 
 from dotenv import load_dotenv
 import os
-
+import constants
 #from utils.imagenarator import imagemaker
 
 
 def get_screenshots_of_reddit_posts(reddit_thread, reddit_comments, screenshot_num: int, theme="dark"):
 
     # settings values
-    W = 1080
-    H = 1920
+    W = constants.DEFAULT_VID_WIDTH
+    H = constants.DEFAULT_VID_HEIGHT
 
     reddit_id = re.sub(r"[^\w\s-]", "", reddit_thread.id)
     # ! Make sure the reddit screenshots folder exists

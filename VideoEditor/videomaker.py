@@ -20,6 +20,7 @@ from moviepy.video.fx.crop import crop
 import random
 import time
 import config
+import constants
 
 def prepare_background(reddit_id,length,W, H):
     my_config = config.load_config()
@@ -55,8 +56,8 @@ def make_final_video(
 
 ):
     # settings values
-    W = 1080
-    H = 1920
+    W = constants.DEFAULT_VID_WIDTH
+    H = constants.DEFAULT_VID_HEIGHT
     opacity = 0.95
 
     print("Creating the final video 🎥")
@@ -107,13 +108,13 @@ def make_final_video(
 
     final.write_videofile(
         f"./Results/Processing/{subreddit}.mp4",
-        fps=int(24),
+        fps=int(60),
         codec='libx264',
         audio_codec="aac",
-        audio_bitrate="192k",
+        audio_bitrate="320k",
         threads=multiprocessing.cpu_count(),
-        ffmpeg_params=['-crf', '15'],
-        preset="ultrafast", # for testing purposes
+        ffmpeg_params=['-crf', '10', '-movflags', '+faststart'],
+        preset="slow", # for testing purposes
     )
     final.close()
 

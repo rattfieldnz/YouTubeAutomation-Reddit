@@ -24,3 +24,5 @@ VIDEO_TAGS = [
     "reddit and chill", "reddit compilation", "tiktok", "tiktokvideo", "tiktokviral"
 ]
 AWS_POLLY_VOICES = ["Joanna","Justin","Kendra","Matthew", "Kimberly","Joey","Salli","Matthew"]
+DEFAULT_VID_WIDTH = 2560
+DEFAULT_VID_HEIGHT = 1440
