@@ -29,7 +29,7 @@ def login():
         reddit = praw.Reddit(
             client_id = os.getenv("REDDIT_CLIENT_ID"), 
             client_secret = os.getenv("REDDIT_CLIENT_SECRET"), 
-            user_agent = my_config['Reddit']['user_agent'],
+            user_agent = os.getenv("REDDIT_USER_AGENT"),
             timeout = int(constants.SOCKET_TIMEOUT / 1000)
         )
         print("Logged in to Reddit successfully!")
