@@ -9,7 +9,10 @@ Assets/temp/*
 BackgroundVideo/*
 Graphics/__pycache__/
 Graphics/data/*
+<<<<<<< HEAD
 logs/*
+=======
+>>>>>>> f6f4a4e6bd33ece475dfeb878f6e47550dd894b4
 Reddit/__pycache__/
 Results/*
 TextToSpeech/__pycache__/
@@ -19,7 +22,11 @@ Youtube/client_secret*
 Youtube/client_secrets.json
 Youtube/token_youtube_v3.pickle
 Youtube/__pycache__/
+<<<<<<< HEAD
 Database/*
+=======
+database.json
+>>>>>>> f6f4a4e6bd33ece475dfeb878f6e47550dd894b4
 __pycache__/
 test.py
 run_test
