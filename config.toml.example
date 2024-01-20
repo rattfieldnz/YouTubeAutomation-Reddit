@@ -5,6 +5,9 @@ path='/path/to/YoutubeAutomation/YouTubeAutomation-Reddit'
 [Background]
 # absolute path to the background video e.g: Desktop/minecraft.mp4
 path='/path/to/YoutubeAutomation/YouTubeAutomation-Reddit/BackgroundVideo/Gta5RelaxingDrivingTour.mp4'
+# Where final videos are stored.
+[ResultsDirectory]
+path='/path/to/Results'
 # ----------------------------------------------------------
 [Reddit]
 # the subredit for which reddit posts are taken

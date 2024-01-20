@@ -1,7 +1,10 @@
+import config
+my_config = config.load_config()
+
 # Constants
 DEFAULT_HTTP_TIMEOUT=300 #For Tiktok API
 SOCKET_TIMEOUT=60000 #In milliseconds
-RESULTS_DIR = './Results'
+RESULTS_DIR = my_config["ResultsDirectory"]["path"]
 SUCCESSFUL_UPLOAD = RESULTS_DIR + '/SuccessfulUpload'
 FAILED_UPLOAD = RESULTS_DIR + '/FailedUpload'
 PROCESSING_DIR = RESULTS_DIR + '/Processing'
